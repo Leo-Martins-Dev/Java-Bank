@@ -1,4 +1,4 @@
-package org.javabank;
+package org.javabank.userinterface;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
