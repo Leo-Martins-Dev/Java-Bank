@@ -1,7 +1,10 @@
 package org.javabank;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Options {
+    Scanner scanner = new Scanner(System.in);
+
     public void showOptions(){
         System.out.println("Please choose one of the options");
         System.out.println("1. Deposit");
@@ -11,8 +14,12 @@ public class Options {
     }
 
     public int scannerOptions(){
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        try {
+            return scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Please insert a number");
+            scanner.next();
+            return scannerOptions();
+        }
     }
 }
-
