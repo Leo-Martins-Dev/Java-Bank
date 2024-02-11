@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CardHolder {
-        private byte numberCard;
-        private byte pin;
+        private long numberCard;
+        private short pin;
         private String firstName;
         private String lastName;
-        private long amount;
+        private double amount;
 }
