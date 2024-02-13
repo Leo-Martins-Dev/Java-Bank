@@ -1,4 +1,9 @@
 package org.javabank.userinterface;
+import org.javabank.entities.CardHolder;
+import org.javabank.services.BankOperations;
+import org.javabank.services.CardAuthenticator;
+import org.javabank.services.CardManager;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,6 +23,13 @@ public class Options {
     }
 
     public void interfaceLoop() {
+        BankOperations bankOperations = new BankOperations();
+        CardManager cardManager = new CardManager();
+
+        CardAuthenticator cardAuthenticator = new CardAuthenticator(cardManager);
+        CardHolder cardHolder = cardAuthenticator.authenticateCardHolder();
+
+
         int numberOption;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -32,7 +44,7 @@ public class Options {
                             //method_Cash_Out
                             break;
                         case SHOW_BALANCE:
-                            //method_Balance
+                            System.out.println(bankOperations.getBalance(cardHolder));
                             break;
                         case QUIT:
                             System.out.println("Exiting...");
