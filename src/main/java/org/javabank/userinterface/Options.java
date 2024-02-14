@@ -1,5 +1,7 @@
 package org.javabank.userinterface;
+
 import org.javabank.entities.CardHolder;
+
 import org.javabank.services.BankOperations;
 import org.javabank.services.CardAuthenticator;
 import org.javabank.services.CardManager;
@@ -15,11 +17,11 @@ public class Options {
     private static final int QUIT = 4;
 
     private void showOptions() {
-        System.out.println("Please choose one of the options");
-        System.out.println("1. Deposit");
-        System.out.println("2. Cash out");
-        System.out.println("3. Show balance");
-        System.out.println("4. Quit");
+        System.out.println("Por favor, escolha uma das opções");
+        System.out.println("1. Depósito");
+        System.out.println("2. Saque");
+        System.out.println("3. Mostrar saldo");
+        System.out.println("4. Sair");
     }
 
     public void interfaceLoop() {
@@ -27,8 +29,11 @@ public class Options {
         CardManager cardManager = new CardManager();
 
         CardAuthenticator cardAuthenticator = new CardAuthenticator(cardManager);
-        CardHolder cardHolder = cardAuthenticator.authenticateCardHolder();
 
+        CardHolder cardHolder = null;
+        while (cardHolder == null) {
+            cardHolder = cardAuthenticator.authenticateCardHolder();
+        }
 
         int numberOption;
         try (Scanner scanner = new Scanner(System.in)) {
@@ -38,33 +43,38 @@ public class Options {
                 try {
                     switch (numberOption) {
                         case DEPOSIT:
-                            //method_Deposit
+                            System.out.print("Digite o valor a ser depositado: ");
+                            double depositMoney = scanner.nextDouble();
+                            double amountNowDeposit = bankOperations.deposit(cardHolder, depositMoney);
+                            System.out.println("Deposito feito com sucesso, saldo atual: " + amountNowDeposit);
                             break;
                         case CASH_OUT:
-                            //method_Cash_Out
+                            System.out.print("Digite o valor a ser retirado: ");
+                            double moneyOut = scanner.nextDouble();
+                            bankOperations.cashOut(cardHolder, moneyOut);
                             break;
                         case SHOW_BALANCE:
-                            System.out.println(bankOperations.getBalance(cardHolder));
+                            System.out.println("Saldo atual: " + bankOperations.getBalance(cardHolder));
                             break;
                         case QUIT:
-                            System.out.println("Exiting...");
+                            System.out.println("Saindo...");
                             break;
                         default:
-                            System.out.println("Invalid option. Please try again.");
+                            System.out.println("Opção inválida. Por favor, tente novamente.");
                             break;
                     }
                 } catch (Exception e) {
-                    System.out.println("An error occurred: " + e.getMessage());
+                    System.out.println("Ocorreu um erro: " + e.getMessage());
                 }
             } while (numberOption != 4);
         }
     }
 
-    private int scannerOptions(Scanner scanner) {
+        private int scannerOptions(Scanner scanner) {
         try {
             return scanner.nextInt();
         } catch (InputMismatchException e) {
-            System.out.println("Please insert a number");
+            System.out.println("Por favor, insira um número");
             showOptions();
             scanner.next();
             return scannerOptions(scanner);
